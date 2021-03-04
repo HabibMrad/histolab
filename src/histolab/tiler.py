@@ -55,20 +55,32 @@ class Tiler(Protocol):
 
     @lru_cache(maxsize=100)
     def box_mask(self, slide: Slide) -> np.ndarray:
-        """Return binary mask, at thumbnail level, of the box for tiles extraction.
+        """Return binary mask, at thumbnail level, of the box for tile extraction.
 
-        The mask pixels set to True correspond to the tissue box.
+        The automatic segmentation of tissue in a WSI is done by a pre-defined
+        composition of filters. The default chain of filters for tissue segmentation is
+        empirically determined and it includes: conversion to grayscale, Otsu
+        thresholding, binary dilation, small holes and small objects filtering,
+        similarly to the pipelines in [1]_.
+
+        The mask pixels set to True correspond to the largest tissue box.
 
         Parameters
         ----------
         slide : Slide
-            The Slide from which to extract the extraction mask
+            The Slide used for the extraction mask
 
         Returns
         -------
         np.ndarray
             Extraction mask at thumbnail level
+
+        References
+        ----------
+        .. [1] M Dusenberry and et al. deep-histopath
+        <https://github.com/CODAIT/deep-histopath>`_
         """
+
         return slide.biggest_tissue_box_mask
 
     @abstractmethod
