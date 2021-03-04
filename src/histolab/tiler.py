@@ -78,7 +78,7 @@ class Tiler(Protocol):
         References
         ----------
         .. [1] M Dusenberry and et al. deep-histopath
-        <https://github.com/CODAIT/deep-histopath>`_
+        https://github.com/CODAIT/deep-histopath
         """
 
         return slide.biggest_tissue_box_mask

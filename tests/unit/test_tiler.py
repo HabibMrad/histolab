@@ -1,6 +1,7 @@
 import csv
 import logging
 import os
+import re
 from unittest.mock import call
 
 import numpy as np
@@ -362,10 +363,10 @@ class Describe_RandomTiler:
         with caplog.at_level(logging.INFO):
             random_tiler.extract(slide)
 
-        assert caplog.text.splitlines() == [
-            "INFO     root:tiler.py:513 \t Tile 0 saved: tile_0_level2_0-10-0-10.png",
-            "INFO     root:tiler.py:513 \t Tile 1 saved: tile_1_level2_0-10-0-10.png",
-            "INFO     root:tiler.py:514 2 Random Tiles have been saved.",
+        assert re.sub(r":+\d{3}", "", caplog.text).splitlines() == [
+            "INFO     root:tiler.py \t Tile 0 saved: tile_0_level2_0-10-0-10.png",
+            "INFO     root:tiler.py \t Tile 1 saved: tile_1_level2_0-10-0-10.png",
+            "INFO     root:tiler.py 2 Random Tiles have been saved.",
         ]
         assert _tile_filename.call_args_list == [
             call(random_tiler, coords, 0),
